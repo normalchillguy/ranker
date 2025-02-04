@@ -258,6 +258,35 @@
           margin: 20px auto;
           font-size: 1.1em;
         }
+
+        .select-wrapper {
+          width: 90%;
+          max-width: 300px;
+        }
+
+        #queenListSelect {
+          font-size: 1em;
+          padding: 15px;
+          padding-right: 35px;
+          text-align-last: center;
+        }
+
+        #queenListSelect option {
+          text-align: center;
+          padding: 15px;
+        }
+
+        #queenListSelect::-ms-expand {
+          display: none;
+        }
+
+        #queenListSelect::-ms-value {
+          text-align: center;
+        }
+
+        #queenListSelect::-webkit-scrollbar {
+          width: 12px;
+        }
       }
 
       /* Small Mobile Styles */
@@ -274,6 +303,17 @@
 
         button {
           width: 180px;
+        }
+
+        #queenListSelect {
+          font-size: 0.9em;
+          padding: 12px;
+          padding-right: 30px;
+        }
+
+        .select-wrapper {
+          width: 95%;
+          max-width: 280px;
         }
       }
 
@@ -292,6 +332,81 @@
         padding: 0;
         z-index: 1000;
       }
+
+      /* Update the select container styles */
+      .select-wrapper {
+        position: relative;
+        width: 300px;
+        margin: 0 auto;
+      }
+
+      .select-wrapper::after {
+        content: '';
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        width: 0;
+        height: 0;
+        border-left: 7px solid transparent;
+        border-right: 7px solid transparent;
+        border-top: 7px solid var(--text-color);
+        transform: translateY(-50%);
+        pointer-events: none;
+        transition: transform 0.3s ease;
+      }
+
+      .select-wrapper.expanded::after {
+        transform: translateY(-50%) rotate(180deg);
+      }
+
+      #queenListSelect {
+        background: linear-gradient(135deg, 
+          rgba(255, 71, 226, 0.3) 0%,
+          rgba(255, 71, 226, 0.1) 100%
+        );
+        color: var(--text-color);
+        border: 1px solid var(--glass-border);
+        padding: 12px;
+        padding-right: 30px;
+        border-radius: 20px;
+        cursor: pointer;
+        font-size: 1.1em;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 8px 32px rgba(255, 71, 226, 0.2);
+        transition: all 0.3s ease;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        width: 100%;
+        text-align: center;
+        background-image: none;
+      }
+
+      #queenListSelect option {
+        background-color: #1f0b45;  /* Dark theme background */
+        color: white;  /* Light text for readability */
+        padding: 12px;
+      }
+
+      /* Light theme options */
+      :root[data-theme="light"] #queenListSelect option {
+        background-color: #f0e6ff;  /* Light theme background */
+        color: #333;  /* Dark text for readability */
+      }
+
+      /* Dark theme disabled option */
+      #queenListSelect option:disabled {
+        background-color: #150832;  /* Slightly darker than regular options */
+        color: rgba(255, 255, 255, 0.5);  /* Semi-transparent white */
+        font-style: italic;
+      }
+
+      /* Light theme disabled option */
+      :root[data-theme="light"] #queenListSelect option:disabled {
+        background-color: #e6e0f0;  /* Slightly darker than regular options */
+        color: #999;
+        font-style: italic;
+      }
     </style>
   </head>
   <body>
@@ -301,15 +416,28 @@
         <p style="
           font-size: 1.3em;
           margin: 20px 0;
-          background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
-          -webkit-background-clip: text;
-          background-clip: text;
-          -webkit-text-fill-color: transparent;
         ">
-          Okurrr hennies! Time to spill the tea and<br>
-          choose your ultimate queen to slay the day!<br>
-          No shade, just choices!
+          <span style="
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+          ">
+            Okurrr hennies! Time to spill the tea and<br>
+            choose your ultimate queen to slay the day!<br>
+            No shade, just choices!
+          </span>
+          💅✨
         </p>
+        <div style="margin: 20px 0;">
+          <div class="select-wrapper">
+            <select id="queenListSelect">
+              <option value="test">Test Queens (16 Queens)</option>
+              <option value="all">All Winners (35 Queens)</option>
+              <option value="full" disabled>All Queens (coming soon)</option>
+            </select>
+          </div>
+        </div>
         <button id="startButton" onclick="startSorting()">Start Ranking</button>
       </div>
 
@@ -337,6 +465,7 @@
       </div>
     </div>
     <button id="themeToggle" onclick="toggleTheme()">🌙</button>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <script src="sorter.js"></script>
   </body>
 </html>

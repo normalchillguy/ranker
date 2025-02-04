@@ -1,10 +1,21 @@
 // Arrays of queens
 let testQueens = [
-  "BeBe Zahara Benet",
-  "Jinkx Monsoon",
-  "Bob the Drag Queen",
-  "Sasha Velour",
-  "Yvie Oddly",
+  "Jorgeous",
+  "Raven",
+  "Tammie Brown",
+  "Delta Work",
+  "Detox",
+  "Alaska",
+  "Gia Gunn",
+  "Derrick Barry",
+  "Nina Bo'nina Brown",
+  "Utica Queen",
+  "Mistress Isabelle Brooks",
+  "Luxx Noir London",
+  "Plane Jane",
+  "Tayce",
+  "Ivory Glaze",
+  "Baby",
 ];
 
 // Winners from all franchises
@@ -54,7 +65,7 @@ let allWinners = [
 ];
 
 // Switch between arrays by changing this variable
-let activeQueens = allWinners;  // Change to allWinners to use full list
+let activeQueens = testQueens;  // Change to allWinners to use full list
 
 let lstMember = new Array();
 let parent = new Array();
@@ -245,7 +256,7 @@ function showResult() {
   let ranking = 1;
   let sameRank = 1;
   let str = `
-    <div style="
+    <div id="resultsContainer" style="
       background: linear-gradient(135deg, 
         ${document.documentElement.getAttribute('data-theme') === 'light' 
           ? 'rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0.8) 100%'
@@ -262,6 +273,7 @@ function showResult() {
         : '0 8px 32px 0 rgba(31, 38, 135, 0.37), inset 0 0 50px rgba(255, 255, 255, 0.1)'
       };
     ">
+      <h2 style="text-align: center; color: var(--primary-color); margin-bottom: 20px;">Your Rankings</h2>
       <table style="
         width: 100%;
         border-collapse: separate;
@@ -334,7 +346,10 @@ function showResult() {
   str += `
       </table>
     </div>
-    <button onclick='location.reload()' style="margin-top: 20px;">Start Over</button>`;
+    <div style="display: flex; gap: 10px; justify-content: center; margin-top: 20px;">
+      <button onclick='location.reload()'>Start Over</button>
+      <button onclick='downloadResults()'>Download Rankings</button>
+    </div>`;
 
   document.getElementById("resultField").innerHTML = str;
 
@@ -342,6 +357,24 @@ function showResult() {
   document.querySelector(".battle-container").style.display = "none";
   document.querySelector(".skip-buttons").style.display = "none";
   document.getElementById("battleNumber").style.display = "none";
+}
+
+// Add this new function
+function downloadResults() {
+  const resultsContainer = document.getElementById('resultsContainer');
+  
+  html2canvas(resultsContainer, {
+    backgroundColor: document.documentElement.getAttribute('data-theme') === 'light' 
+      ? '#e6e9ff' 
+      : '#000b3c',
+    scale: 2, // Higher quality
+  }).then(canvas => {
+    // Create download link
+    const link = document.createElement('a');
+    link.download = 'drag-queen-rankings.png';
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+  });
 }
 
 //Indicates two elements to compare+++++++++++++++++++++++++++++++++++
@@ -372,6 +405,10 @@ function initialize() {
 }
 
 function startSorting() {
+  // Set activeQueens based on selection
+  const selectedList = document.getElementById('queenListSelect').value;
+  activeQueens = selectedList === 'test' ? testQueens : allWinners;
+  
   document.getElementById("splashScreen").style.display = "none";
   document.getElementById("mainContent").style.display = "block";
   initialize();
@@ -423,4 +460,18 @@ document.addEventListener('DOMContentLoaded', () => {
     root.setAttribute('data-theme', 'light');
     themeButton.innerHTML = '☀️';
   }
+
+  // Add select expand/collapse handler
+  const select = document.getElementById('queenListSelect');
+  select.addEventListener('mousedown', function() {
+    this.parentElement.classList.toggle('expanded');
+  });
+  
+  select.addEventListener('blur', function() {
+    this.parentElement.classList.remove('expanded');
+  });
+  
+  select.addEventListener('change', function() {
+    this.parentElement.classList.remove('expanded');
+  });
 });
