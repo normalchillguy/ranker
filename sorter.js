@@ -384,9 +384,18 @@ function showImage() {
   let str1 = "" + toNameFace(lstMember[cmp1][head1]);
   let str2 = "" + toNameFace(lstMember[cmp2][head2]);
 
+  // Reset any lingering styles
+  const leftField = document.getElementById("leftField");
+  const rightField = document.getElementById("rightField");
+  
+  leftField.classList.remove('clicked');
+  rightField.classList.remove('clicked');
+  leftField.style = "";
+  rightField.style = "";
+
   document.getElementById("battleNumber").innerHTML = str0;
-  document.getElementById("leftField").innerHTML = str1;
-  document.getElementById("rightField").innerHTML = str2;
+  leftField.innerHTML = str1;
+  rightField.innerHTML = str2;
 
   numQuestion++;
 }
