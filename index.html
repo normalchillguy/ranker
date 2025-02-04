@@ -73,7 +73,7 @@
         backdrop-filter: blur(10px);
         border: 1px solid var(--glass-border);
         border-radius: 20px;
-        transition: all 0.3s ease;
+        transition: all 0.2s ease;
         font-size: 1.2em;
         box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37),
           inset 0 0 50px rgba(255, 255, 255, 0.1);
@@ -89,16 +89,28 @@
         box-sizing: border-box;
       }
 
-      .queen-option:hover {
-        transform: translateY(-5px) scale(1.02);
-        background: linear-gradient(
-          135deg,
+      .queen-option.clicked {
+        transform: none !important;
+        background: linear-gradient(135deg, 
           rgba(255, 71, 226, 0.3) 0%,
           rgba(255, 71, 226, 0.1) 100%
-        );
-        box-shadow: 0 12px 40px 0 rgba(255, 71, 226, 0.3),
-          inset 0 0 50px rgba(255, 71, 226, 0.2),
-          0 0 20px rgba(255, 71, 226, 0.4);
+        ) !important;
+        box-shadow: none !important;
+      }
+
+      /* Disable hover effects on touch devices */
+      @media (hover: hover) {
+        .queen-option:hover {
+          transform: translateY(-5px) scale(1.02);
+          background: linear-gradient(
+            135deg,
+            rgba(255, 71, 226, 0.3) 0%,
+            rgba(255, 71, 226, 0.1) 100%
+          );
+          box-shadow: 0 12px 40px 0 rgba(255, 71, 226, 0.3),
+            inset 0 0 50px rgba(255, 71, 226, 0.2),
+            0 0 20px rgba(255, 71, 226, 0.4);
+        }
       }
 
       #splashScreen {

@@ -421,10 +421,25 @@ function recordChoice(choice) {
   }
 
   let flag;
+  const leftField = document.getElementById("leftField");
+  const rightField = document.getElementById("rightField");
+
   if (choice == "left") {
     flag = -1;
+    leftField.classList.add('clicked');
+    setTimeout(() => {
+      leftField.classList.remove('clicked');
+      leftField.style.transform = "";
+      leftField.style.background = "";
+    }, 200);
   } else if (choice == "right") {
     flag = 1;
+    rightField.classList.add('clicked');
+    setTimeout(() => {
+      rightField.classList.remove('clicked');
+      rightField.style.transform = "";
+      rightField.style.background = "";
+    }, 200);
   } else if (choice == "tie") {
     flag = 0;
   } else if (choice == "skip") {
