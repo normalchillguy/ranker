@@ -483,8 +483,15 @@
           ></div>
         </div>
         <div class="skip-buttons">
-          <button onclick="recordChoice('tie')">I Like Both</button>
-          <button onclick="recordChoice('skip')">Can't Decide</button>
+          <button onclick="recordChoice('skip')" style="font-size: 1.1em;">Can't Decide</button>
+          <button onclick="recordChoice('tie')" style="
+            font-size: 0.9em;
+            opacity: 0.8;
+            background: linear-gradient(135deg, 
+              rgba(255, 71, 226, 0.2) 0%,
+              rgba(255, 71, 226, 0.05) 100%
+            );
+          ">Both Equal</button>
         </div>
         <div id="resultField"></div>
       </div>

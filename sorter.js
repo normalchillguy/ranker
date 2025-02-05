@@ -81,6 +81,11 @@ let totalSize;
 let finishSize;
 let finishFlag;
 
+// Add at the top with other variables
+let winCounts = {};  // Track how many times each queen has won
+let tieCount = 0;
+const TIE_WARNING_THRESHOLD = 5;
+
 // Add this Fisher-Yates shuffle function
 function shuffleArray(array) {
   for (let i = array.length - 1; i > 0; i--) {
@@ -146,6 +151,30 @@ function initList() {
 function sortList(flag) {
   var i;
   var str;
+
+  // When processing a tie
+  if (flag === 0) {
+    // Break tie based on which queen has won more previous battles
+    const queen1 = lstMember[cmp1][head1];
+    const queen2 = lstMember[cmp2][head2];
+    winCounts[queen1] = winCounts[queen1] || 0;
+    winCounts[queen2] = winCounts[queen2] || 0;
+    
+    if (winCounts[queen1] > winCounts[queen2]) {
+      flag = -1;
+    } else if (winCounts[queen2] > winCounts[queen1]) {
+      flag = 1;
+    }
+  }
+  
+  // Update win counts when a queen wins
+  if (flag < 0) {
+    const winner = lstMember[cmp1][head1];
+    winCounts[winner] = (winCounts[winner] || 0) + 1;
+  } else if (flag > 0) {
+    const winner = lstMember[cmp2][head2];
+    winCounts[winner] = (winCounts[winner] || 0) + 1;
+  }
 
   //rec preservation
   if (flag < 0) {
@@ -253,6 +282,12 @@ function sortList(flag) {
 
 //The results+++++++++++++++++++++++++++++++++++++++++++++++
 function showResult() {
+  // Before showing results, resolve any remaining ties
+  let tiedGroups = findTiedQueens();
+  if (tiedGroups.length > 0) {
+    runTiebreakerRound(tiedGroups);
+    return;
+  }
   let ranking = 1;
   let sameRank = 1;
   let str = `
@@ -359,6 +394,24 @@ function showResult() {
   document.getElementById("battleNumber").style.display = "none";
 }
 
+function findTiedQueens() {
+  let tiedGroups = [];
+  let currentGroup = [];
+  
+  for (let i = 0; i < activeQueens.length - 1; i++) {
+    if (equal[lstMember[0][i]] == lstMember[0][i + 1]) {
+      if (currentGroup.length === 0) {
+        currentGroup.push(lstMember[0][i]);
+      }
+      currentGroup.push(lstMember[0][i + 1]);
+    } else if (currentGroup.length > 0) {
+      tiedGroups.push(currentGroup);
+      currentGroup = [];
+    }
+  }
+  return tiedGroups;
+}
+
 // Add this new function
 function downloadResults() {
   const resultsContainer = document.getElementById('resultsContainer');
@@ -450,6 +503,11 @@ function recordChoice(choice) {
       rightField.style.background = "";
     }, 200);
   } else if (choice == "tie") {
+    tieCount++;
+    if (tieCount >= TIE_WARNING_THRESHOLD) {
+      alert("Try to choose a favorite when possible to get more precise rankings!");
+      tieCount = 0;
+    }
     flag = 0;
   } else if (choice == "skip") {
     flag = Math.floor(Math.random() * 2) ? 1 : -1;
