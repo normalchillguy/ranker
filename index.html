@@ -205,6 +205,9 @@
       }
 
       button {
+        width: 200px;
+        height: 50px;
+        font-size: 1.2em;
         background: linear-gradient(
           135deg,
           rgba(255, 71, 226, 0.3) 0%,
@@ -212,22 +215,33 @@
         );
         color: var(--text-color);
         border: 1px solid rgba(255, 71, 226, 0.5);
-        padding: 10px 20px;
         border-radius: 20px;
         cursor: pointer;
+        padding: 0;
         transition: all 0.3s ease;
-        font-size: 1em;
         backdrop-filter: blur(10px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
 
       button:hover {
-        transform: translateY(-2px);
+        transform: translateY(-5px) scale(1.05);
         background: linear-gradient(
           135deg,
           rgba(255, 71, 226, 0.4) 0%,
           rgba(255, 71, 226, 0.2) 100%
         );
-        box-shadow: var(--neon-glow);
+        box-shadow: 0 12px 40px rgba(255, 71, 226, 0.4),
+          inset 0 0 50px rgba(255, 71, 226, 0.3);
+      }
+
+      .button-container {
+        display: flex;
+        gap: 20px;
+        margin-top: 20px;
+        justify-content: center;
+        align-items: center;
       }
 
       #resultField {
@@ -455,15 +469,20 @@
           "
         >
         <div style="margin: 20px 0;">
-          <div class="select-wrapper">
-            <select id="queenListSelect">
-              <option value="test">Test Queens (16 Queens)</option>
-              <option value="all">All Winners (35 Queens)</option>
-              <option value="full" disabled>All Queens (coming soon)</option>
-            </select>
+          <div style="display: flex; justify-content: center; margin-bottom: 50px; height: 50px;">
+            <button id="loadButton" onclick="loadSavedProgress()">Continue Ranking</button>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 8px; align-items: center;">
+            <div class="select-wrapper">
+              <select id="queenListSelect">
+                <option value="test">Test Queens (8 Queens)</option>
+                <option value="all">All Winners (35 Queens)</option>
+                <option value="full">All Queens (322 Queens)</option>
+              </select>
+            </div>
+            <button id="startButton" onclick="startSorting()">Start New Ranking</button>
           </div>
         </div>
-        <button id="startButton" onclick="startSorting()">Start Ranking</button>
       </div>
 
       <div id="mainContent">
@@ -482,22 +501,16 @@
             onclick="recordChoice('right')"
           ></div>
         </div>
-        <div class="skip-buttons">
-          <button onclick="recordChoice('skip')" style="font-size: 1.1em;">Can't Decide</button>
-          <button onclick="recordChoice('tie')" style="
-            font-size: 0.9em;
-            opacity: 0.8;
-            background: linear-gradient(135deg, 
-              rgba(255, 71, 226, 0.2) 0%,
-              rgba(255, 71, 226, 0.05) 100%
-            );
-          ">Both Equal</button>
-        </div>
         <div id="resultField"></div>
+        <div class="skip-buttons">
+          <button onclick="saveProgress()">
+            Save Progress
+          </button>
+        </div>
       </div>
     </div>
     <button id="themeToggle" onclick="toggleTheme()">🌙</button>
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
-    <script src="sorter.js"></script>
+    <script src="main.js" type="module"></script>
   </body>
 </html>

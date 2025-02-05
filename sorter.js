@@ -1,71 +1,9 @@
-// Arrays of queens
-let testQueens = [
-  "Jorgeous",
-  "Raven",
-  "Tammie Brown",
-  "Delta Work",
-  "Detox",
-  "Alaska",
-  "Gia Gunn",
-  "Derrick Barry",
-  "Nina Bo'nina Brown",
-  "Utica Queen",
-  "Mistress Isabelle Brooks",
-  "Luxx Noir London",
-  "Plane Jane",
-  "Tayce",
-  "Ivory Glaze",
-  "Baby",
-];
+console.log('sorter.js is loading');
+import { testQueens } from './lists/testQueens.js';
+import { allWinners } from './lists/allWinners.js';
+import { allQueens } from './lists/allQueens.js';
 
-// Winners from all franchises
-let allWinners = [
-  // Regular US Season Winners
-  "BeBe Zahara Benet",
-  "Tyra Sanchez",
-  "Raja",
-  "Sharon Needles",
-  "Jinkx Monsoon",
-  "Bianca Del Rio",
-  "Violet Chachki",
-  "Bob the Drag Queen",
-  "Sasha Velour",
-  "Aquaria",
-  "Yvie Oddly",
-  "Jaida Essence Hall",
-  "Symone",
-  "Willow Pill",
-  "Sasha Colby",
-  "Nymphia Wind",
-
-  // All Stars Winners
-  "Chad Michaels",
-  "Alaska",
-  "Trixie Mattel",
-  "Trinity the Tuck", 
-  "Monét X Change",
-  "Shea Couleé",
-  "Kylie Sonique Love",
-  "Jimbo",
-  "Angeria Paris VanMichaels",
-
-  // UK Winners
-  "The Vivienne",
-  "Lawrence Chaney",
-  "Krystal Versace",
-  "Danny Beard",
-  "Ginger Johnson",
-  "Kyran Thrax",
-
-  // Down Under Winners
-  "Kita Mean",
-  "Spankie Jackzon",
-  "Isis Avis Loren",
-  "Lazy Susan",
-];
-
-// Switch between arrays by changing this variable
-let activeQueens = testQueens;  // Change to allWinners to use full list
+let activeQueens = testQueens; 
 
 let lstMember = new Array();
 let parent = new Array();
@@ -87,7 +25,7 @@ let tieCount = 0;
 const TIE_WARNING_THRESHOLD = 5;
 
 // Add this Fisher-Yates shuffle function
-function shuffleArray(array) {
+export function shuffleArray(array) {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [array[i], array[j]] = [array[j], array[i]];
@@ -96,7 +34,7 @@ function shuffleArray(array) {
 }
 
 //The initialization of the variable+++++++++++++++++++++++++++++++++++++++++++++
-function initList() {
+export function initList() {
   let n = 0;
   let mid;
   let i;
@@ -148,7 +86,7 @@ function initList() {
 }
 
 //The sorting+++++++++++++++++++++++++++++++++++++++++++
-function sortList(flag) {
+export function sortList(flag) {
   var i;
   var str;
 
@@ -267,11 +205,11 @@ function sortList(flag) {
 
   if (cmp1 < 0) {
     str =
-      "battle #" +
+      "choice #" +
       (numQuestion - 1) +
       "<br>" +
       Math.floor((finishSize * 100) / totalSize) +
-      "% sorted.";
+      "% ranked";
     document.getElementById("battleNumber").innerHTML = str;
     showResult();
     finishFlag = 1;
@@ -281,13 +219,26 @@ function sortList(flag) {
 }
 
 //The results+++++++++++++++++++++++++++++++++++++++++++++++
-function showResult() {
+export function showResult() {
   // Before showing results, resolve any remaining ties
   let tiedGroups = findTiedQueens();
   if (tiedGroups.length > 0) {
     runTiebreakerRound(tiedGroups);
     return;
   }
+
+  // Hide the battle interface first
+  const battleContainer = document.querySelector(".battle-container");
+  const skipButtons = document.querySelector(".skip-buttons");
+  const battleNumber = document.getElementById("battleNumber");
+  
+  if (battleContainer) battleContainer.style.display = "none";
+  if (skipButtons) skipButtons.style.display = "none";
+  if (battleNumber) battleNumber.style.display = "none";
+
+  // Clear saved progress since ranking is complete
+  localStorage.removeItem('queenRankerProgress');
+
   let ranking = 1;
   let sameRank = 1;
   let str = `
@@ -387,14 +338,9 @@ function showResult() {
     </div>`;
 
   document.getElementById("resultField").innerHTML = str;
-
-  // Hide the battle interface
-  document.querySelector(".battle-container").style.display = "none";
-  document.querySelector(".skip-buttons").style.display = "none";
-  document.getElementById("battleNumber").style.display = "none";
 }
 
-function findTiedQueens() {
+export function findTiedQueens() {
   let tiedGroups = [];
   let currentGroup = [];
   
@@ -413,7 +359,7 @@ function findTiedQueens() {
 }
 
 // Add this new function
-function downloadResults() {
+export function downloadResults() {
   const resultsContainer = document.getElementById('resultsContainer');
   
   html2canvas(resultsContainer, {
@@ -421,19 +367,25 @@ function downloadResults() {
       ? '#e6e9ff' 
       : '#000b3c',
     scale: 2, // Higher quality
+    logging: false, // Disable logging
+    useCORS: true, // Enable CORS
+    allowTaint: true // Allow tainted canvas
   }).then(canvas => {
     // Create download link
     const link = document.createElement('a');
     link.download = 'drag-queen-rankings.png';
     link.href = canvas.toDataURL('image/png');
     link.click();
+  }).catch(error => {
+    console.error('Error generating image:', error);
+    alert('Sorry, there was an error downloading your rankings. Please try again.');
   });
 }
 
 //Indicates two elements to compare+++++++++++++++++++++++++++++++++++
-function showImage() {
-  let str0 = "battle #" + numQuestion + "<br>" + 
-             Math.floor((finishSize * 100) / totalSize) + "% sorted.";
+export function showImage() {
+  let str0 = "choice #" + numQuestion + "<br>" + 
+             Math.floor((finishSize * 100) / totalSize) + "% ranked";
   let str1 = "" + toNameFace(lstMember[cmp1][head1]);
   let str2 = "" + toNameFace(lstMember[cmp2][head2]);
 
@@ -454,29 +406,38 @@ function showImage() {
 }
 
 //Convert numeric value into a name (emoticon)+++++++++++++++++++++++++++++++
-function toNameFace(n) {
+export function toNameFace(n) {
   return activeQueens[n];
 }
 
 // Modify the initialize function to shuffle before starting
-function initialize() {
+export function initialize() {
   // Shuffle the active queens array before starting
   activeQueens = shuffleArray([...activeQueens]);
   initList();
   showImage();
 }
 
-function startSorting() {
-  // Set activeQueens based on selection
+export function startSorting() {
   const selectedList = document.getElementById('queenListSelect').value;
-  activeQueens = selectedList === 'test' ? testQueens : allWinners;
+  switch(selectedList) {
+    case 'test':
+      activeQueens = testQueens;
+      break;
+    case 'all':
+      activeQueens = allWinners;
+      break;
+    case 'full':
+      activeQueens = allQueens;
+      break;
+  }
   
   document.getElementById("splashScreen").style.display = "none";
   document.getElementById("mainContent").style.display = "block";
   initialize();
 }
 
-function recordChoice(choice) {
+export function recordChoice(choice) {
   if (finishFlag) {
     showResult();
     return;
@@ -502,34 +463,9 @@ function recordChoice(choice) {
       rightField.style.transform = "";
       rightField.style.background = "";
     }, 200);
-  } else if (choice == "tie") {
-    tieCount++;
-    if (tieCount >= TIE_WARNING_THRESHOLD) {
-      alert("Try to choose a favorite when possible to get more precise rankings!");
-      tieCount = 0;
-    }
-    flag = 0;
-  } else if (choice == "skip") {
-    flag = Math.floor(Math.random() * 2) ? 1 : -1;
   }
 
   sortList(flag);
-}
-
-// Add at the top of the file
-function toggleTheme() {
-  const root = document.documentElement;
-  const themeButton = document.getElementById('themeToggle');
-  
-  if (root.getAttribute('data-theme') === 'light') {
-    root.removeAttribute('data-theme');
-    themeButton.innerHTML = '🌙';
-    localStorage.setItem('theme', 'dark');
-  } else {
-    root.setAttribute('data-theme', 'light');
-    themeButton.innerHTML = '☀️';
-    localStorage.setItem('theme', 'light');
-  }
 }
 
 // Add this to initialize theme from localStorage
@@ -557,3 +493,97 @@ document.addEventListener('DOMContentLoaded', () => {
     this.parentElement.classList.remove('expanded');
   });
 });
+
+export function toggleTheme() {
+  const root = document.documentElement;
+  const themeButton = document.getElementById('themeToggle');
+  
+  if (root.getAttribute('data-theme') === 'light') {
+    root.removeAttribute('data-theme');
+    themeButton.innerHTML = '🌙';
+    localStorage.setItem('theme', 'dark');
+  } else {
+    root.setAttribute('data-theme', 'light');
+    themeButton.innerHTML = '☀️';
+    localStorage.setItem('theme', 'light');
+  }
+}
+
+export function runTiebreakerRound(tiedGroups) {
+  // ... function content ...
+}
+
+// Add these new functions
+export function saveProgress() {
+  const saveData = {
+    lstMember,
+    parent,
+    equal,
+    rec,
+    cmp1,
+    cmp2,
+    head1,
+    head2,
+    nrec,
+    numQuestion,
+    totalSize,
+    finishSize,
+    finishFlag,
+    activeQueens,
+    winCounts
+  };
+  
+  localStorage.setItem('queenRankerProgress', JSON.stringify(saveData));
+  
+  // Show save confirmation
+  const saveConfirm = document.createElement('div');
+  saveConfirm.textContent = 'Progress saved!';
+  saveConfirm.style.cssText = `
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--glass);
+    padding: 10px 20px;
+    border-radius: 10px;
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(10px);
+    color: var(--text-color);
+    z-index: 1000;
+  `;
+  document.body.appendChild(saveConfirm);
+  setTimeout(() => saveConfirm.remove(), 2000);
+}
+
+export function loadProgress() {
+  const savedData = localStorage.getItem('queenRankerProgress');
+  if (!savedData) return false;
+  
+  const data = JSON.parse(savedData);
+  
+  // Restore all the variables
+  lstMember = data.lstMember;
+  parent = data.parent;
+  equal = data.equal;
+  rec = data.rec;
+  cmp1 = data.cmp1;
+  cmp2 = data.cmp2;
+  head1 = data.head1;
+  head2 = data.head2;
+  nrec = data.nrec;
+  numQuestion = data.numQuestion - 1;
+  totalSize = data.totalSize;
+  finishSize = data.finishSize;
+  finishFlag = data.finishFlag;
+  activeQueens = data.activeQueens;
+  winCounts = data.winCounts;
+  
+  // Update the display
+  showImage();
+  return true;
+}
+
+export function clearProgress() {
+  localStorage.removeItem('queenRankerProgress');
+  location.reload();
+}
