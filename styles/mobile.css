@@ -1,0 +1,97 @@
+@media (max-width: 900px) {
+  .battle-container {
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+    margin: 20px auto;
+  }
+
+  .queen-option {
+    width: 90%;
+    min-width: unset;
+    max-width: 400px;
+    height: 120px;
+    margin: 0;
+    font-size: 1em;
+  }
+
+  .skip-buttons {
+    flex-direction: column;
+    gap: 15px;
+    align-items: center;
+    width: 90%;
+    max-width: 400px;
+    margin: 20px auto;
+  }
+
+  button {
+    width: 200px;
+    margin: 0;
+  }
+
+  #battleNumber {
+    width: 90%;
+    margin: 20px auto;
+    font-size: 1.1em;
+  }
+
+  .select-wrapper {
+    width: 110%;
+    max-width: 600px;
+  }
+
+  #queenListSelect {
+    font-size: 1.2em;
+    padding: 15px;
+    padding-right: 35px;
+    text-align-last: center;
+    width: 100%;
+  }
+
+  /* Adjust button text for narrow screens */
+  #downloadButton {
+    width: 200px;  /* Same width as other buttons */
+  }
+}
+
+@media (max-width: 400px) {
+  .container {
+    padding: 10px;
+  }
+
+  .queen-option {
+    height: 120px;
+    padding: 15px;
+    font-size: 0.9em;
+  }
+
+  button {
+    width: 180px;
+  }
+
+  #queenListSelect {
+    font-size: 1.1em;
+    padding: 12px;
+    padding-right: 30px;
+    width: 100%;
+  }
+
+  #downloadButton {
+    width: 180px;  /* Match other buttons */
+  }
+}
+
+/* Disable hover effects on touch devices */
+@media (hover: hover) {
+  .queen-option:hover {
+    transform: translateY(-5px) scale(1.02);
+    background: linear-gradient(
+      135deg,
+      rgba(255, 71, 226, 0.3) 0%,
+      rgba(255, 71, 226, 0.1) 100%
+    );
+    box-shadow: 0 12px 40px 0 rgba(255, 71, 226, 0.3),
+      inset 0 0 50px rgba(255, 71, 226, 0.2),
+      0 0 20px rgba(255, 71, 226, 0.4);
+  }
+} 

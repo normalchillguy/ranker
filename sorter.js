@@ -1,9 +1,9 @@
 console.log('sorter.js is loading');
-import { testQueens } from './lists/testQueens.js';
+import { getRandomQueens } from './lists/testQueens.js';
 import { allWinners } from './lists/allWinners.js';
 import { allQueens } from './lists/allQueens.js';
 
-let activeQueens = testQueens; 
+let activeQueens = [];
 
 let lstMember = new Array();
 let parent = new Array();
@@ -334,7 +334,7 @@ export function showResult() {
     </div>
     <div style="display: flex; gap: 10px; justify-content: center; margin-top: 20px;">
       <button onclick='location.reload()'>Start Over</button>
-      <button onclick='downloadResults()'>Download Rankings</button>
+      <button id="downloadButton" onclick='downloadResults()'>Download</button>
     </div>`;
 
   document.getElementById("resultField").innerHTML = str;
@@ -366,16 +366,27 @@ export function downloadResults() {
     backgroundColor: document.documentElement.getAttribute('data-theme') === 'light' 
       ? '#e6e9ff' 
       : '#000b3c',
-    scale: 2, // Higher quality
-    logging: false, // Disable logging
-    useCORS: true, // Enable CORS
-    allowTaint: true // Allow tainted canvas
+    scale: 2,
+    logging: false,
+    useCORS: true,
+    allowTaint: true
   }).then(canvas => {
-    // Create download link
-    const link = document.createElement('a');
-    link.download = 'drag-queen-rankings.png';
-    link.href = canvas.toDataURL('image/png');
-    link.click();
+    // Convert canvas to blob
+    canvas.toBlob((blob) => {
+      // Create object URL
+      const url = window.URL.createObjectURL(blob);
+      // Create download link
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'drag-queen-rankings.png';
+      // Append link to body
+      document.body.appendChild(link);
+      // Trigger click
+      link.click();
+      // Clean up
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    }, 'image/png');
   }).catch(error => {
     console.error('Error generating image:', error);
     alert('Sorry, there was an error downloading your rankings. Please try again.');
@@ -421,8 +432,8 @@ export function initialize() {
 export function startSorting() {
   const selectedList = document.getElementById('queenListSelect').value;
   switch(selectedList) {
-    case 'test':
-      activeQueens = testQueens;
+    case 'random':
+      activeQueens = getRandomQueens(10);
       break;
     case 'all':
       activeQueens = allWinners;
@@ -478,20 +489,6 @@ document.addEventListener('DOMContentLoaded', () => {
     root.setAttribute('data-theme', 'light');
     themeButton.innerHTML = '☀️';
   }
-
-  // Add select expand/collapse handler
-  const select = document.getElementById('queenListSelect');
-  select.addEventListener('mousedown', function() {
-    this.parentElement.classList.toggle('expanded');
-  });
-  
-  select.addEventListener('blur', function() {
-    this.parentElement.classList.remove('expanded');
-  });
-  
-  select.addEventListener('change', function() {
-    this.parentElement.classList.remove('expanded');
-  });
 });
 
 export function toggleTheme() {
@@ -537,22 +534,44 @@ export function saveProgress() {
   
   // Show save confirmation
   const saveConfirm = document.createElement('div');
-  saveConfirm.textContent = 'Progress saved!';
+  saveConfirm.textContent = 'Progress saved. You can exit and continue your ranking later.';
   saveConfirm.style.cssText = `
     position: fixed;
-    bottom: 20px;
+    top: 50%;
     left: 50%;
-    transform: translateX(-50%);
+    transform: translate(-50%, -50%);
     background: var(--glass);
-    padding: 10px 20px;
+    padding: 20px 30px;
     border-radius: 10px;
     border: 1px solid var(--glass-border);
     backdrop-filter: blur(10px);
     color: var(--text-color);
+    font-size: 1.2em;
+    text-align: center;
+    max-width: 300px;
+    box-shadow: 0 8px 32px rgba(255, 71, 226, 0.3);
+    animation: fadeIn 0.3s ease;
     z-index: 1000;
   `;
+  
+  // Add a style tag for the animation if it doesn't exist
+  if (!document.getElementById('saveConfirmStyle')) {
+    const style = document.createElement('style');
+    style.id = 'saveConfirmStyle';
+    style.textContent = `
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translate(-50%, -40%); }
+        to { opacity: 1; transform: translate(-50%, -50%); }
+      }
+    `;
+    document.head.appendChild(style);
+  }
+  
   document.body.appendChild(saveConfirm);
-  setTimeout(() => saveConfirm.remove(), 2000);
+  setTimeout(() => {
+    saveConfirm.style.animation = 'fadeIn 0.3s ease reverse';
+    setTimeout(() => saveConfirm.remove(), 300);
+  }, 2000);
 }
 
 export function loadProgress() {
@@ -587,3 +606,19 @@ export function clearProgress() {
   localStorage.removeItem('queenRankerProgress');
   location.reload();
 }
+
+// Add this near the top with other event listeners
+document.addEventListener('keydown', (e) => {
+  // Secret shortcut: Press 'Shift + R' to skip to results
+  if (e.shiftKey && e.key.toLowerCase() === 'r') {
+    // Only work with allQueens for testing
+    if (activeQueens.length === allQueens.length) {
+      // Set up completion state
+      finishFlag = 1;
+      finishSize = totalSize;
+      // Create a simple sequential ranking
+      lstMember = [[...Array(activeQueens.length).keys()]];
+      showResult();
+    }
+  }
+});

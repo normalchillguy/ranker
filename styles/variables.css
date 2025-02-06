@@ -1,0 +1,26 @@
+:root {
+  --primary-color: rgb(255, 71, 226);
+  --primary-dark: rgb(186, 38, 161);
+  --background: rgb(0, 11, 60);
+  --text-color: rgb(255, 255, 255);
+  --glass: rgba(255, 255, 255, 0.1);
+  --glass-border: rgba(255, 255, 255, 0.2);
+  --neon-glow: 0 0 10px rgba(255, 71, 226, 0.5);
+}
+
+:root[data-theme="light"] {
+  --primary-color: rgb(255, 71, 226);
+  --primary-dark: rgb(186, 38, 161);
+  --background: rgb(230, 233, 255);
+  --text-color: rgb(0, 11, 60);
+  --glass: rgba(255, 255, 255, 0.8);
+  --glass-border: rgba(255, 71, 226, 0.3);
+}
+
+body {
+  background: var(--background);
+  color: var(--text-color);
+  font-family: system-ui, -apple-system, sans-serif;
+  margin: 0;
+  min-height: 100vh;
+} 
