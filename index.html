@@ -4,8 +4,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Drag Queen Ranker</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>👑</text></svg>">
-    <link rel="stylesheet" href="styles/main.css">
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>👑</text></svg>"
+    />
+    <link rel="stylesheet" href="styles/main.css" />
   </head>
   <body>
     <div class="container">
@@ -13,31 +16,48 @@
         <h1>Drag Queen Ranker</h1>
         <p class="splash-text">
           <span>
-            Okurrr hennies! Time to spill the tea and
-            choose your ultimate queen to slay<br>
+            Okurrr hennies! Time to spill the tea and choose your ultimate queen
+            to slay<br />
             the day! No shade, just choices!
           </span>
           💅✨
         </p>
-        <img 
+        <img
           src="https://media.giphy.com/media/l0HlUNj5BRuYDLxFm/giphy.gif"
-          alt="Tatianna saying 'Choices'" 
+          alt="Tatianna saying 'Choices'"
           class="splash-gif"
-        >
+        />
         <div class="splash-controls">
-          <div style="display: flex; justify-content: center; margin-bottom: 50px; height: 50px;">
-            <button id="loadButton" onclick="loadSavedProgress()">Continue Ranking</button>
+          <div
+            style="
+              display: flex;
+              justify-content: center;
+              margin-bottom: 50px;
+              height: 50px;
+            "
+          >
+            <button id="loadButton" onclick="loadSavedProgress()">
+              Continue Ranking
+            </button>
           </div>
-          <div style="display: flex; flex-direction: column; gap: 8px; align-items: center;">
+          <div
+            style="
+              display: flex;
+              flex-direction: column;
+              gap: 8px;
+              align-items: center;
+            "
+          >
             <div class="select-wrapper">
               <select id="queenListSelect">
                 <option value="random">Random Queens (10 Queens)</option>
                 <option value="all">All Winners (35 Queens)</option>
-                <option value="full">All Queens (322 Queens)</option>
-                <option value="data">Queens with Data (22 Queens)</option>
+                <option value="full">All Queens (332 Queens)</option>
               </select>
             </div>
-            <button id="startButton" onclick="startSorting()">Start New Ranking</button>
+            <button id="startButton" onclick="startSorting()">
+              Start New Ranking
+            </button>
           </div>
         </div>
       </div>
@@ -60,9 +80,7 @@
         </div>
         <div id="resultField"></div>
         <div class="skip-buttons">
-          <button onclick="saveProgress()">
-            Save Progress
-          </button>
+          <button onclick="saveProgress()">Save Progress</button>
         </div>
       </div>
     </div>
