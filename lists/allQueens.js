@@ -405,3 +405,8 @@ export const allQueens = [
     // All Stars 8 (Premiered May 12, 2023)
     "Jimbo",
   ];
+
+// Helper function to get just names when needed
+export function getQueenNames() {
+  return allQueens.map(queen => queen.name);
+}

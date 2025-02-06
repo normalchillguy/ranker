@@ -13,15 +13,4 @@ export function getRandomQueens(count = 10) {
   
   // Return first 'count' queens
   return shuffled.slice(0, count);
-}
-
-export const testQueens = [
-  "Bimini Bon-Boulash",
-  "Naomi Smalls",
-  "Jasmine Kennedie",
-  "Choriza May",
-  "Kween Kong",
-  "Acid Betty",
-  "Jade Jolie",
-  "Megami"
-]; 
+} 

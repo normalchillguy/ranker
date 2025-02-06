@@ -2,6 +2,7 @@ console.log('sorter.js is loading');
 import { getRandomQueens } from './lists/testQueens.js';
 import { allWinners } from './lists/allWinners.js';
 import { allQueens } from './lists/allQueens.js';
+import { queensWithData } from './lists/queensWithData.js';
 
 let activeQueens = [];
 
@@ -400,6 +401,50 @@ export function showImage() {
   let str1 = "" + toNameFace(lstMember[cmp1][head1]);
   let str2 = "" + toNameFace(lstMember[cmp2][head2]);
 
+  // If we're using queensWithData or allWinners, add the additional info
+  if (typeof activeQueens[0] === 'object') {  // Check if we're using the data structure
+    const queen1 = activeQueens.find(q => q.name === str1);
+    const queen2 = activeQueens.find(q => q.name === str2);
+    
+    if (queen1) {
+      str1 = `
+        <div class="queen-badges">
+          ${queen1.winner ? '<span title="Winner">👑</span>' : ''}
+          ${queen1.missCongeniality ? '<span title="Miss Congeniality">👩‍❤️‍👩</span>' : ''}
+        </div>
+        <div class="queen-details">
+          <div class="queen-name">${queen1.name}</div>
+          <div class="queen-seasons">
+            ${queen1.seasons.map(s => 
+              `<span class="season-name">${s.season}:</span>` +
+              `<span class="season-placement">${s.placement.map(p => 
+                p + (p === 1 ? 'st' : p === 2 ? 'nd' : p === 3 ? 'rd' : 'th')
+              ).join(' / ')}</span>`
+            ).join('<br>')}
+          </div>
+        </div>`;
+    }
+    
+    if (queen2) {
+      str2 = `
+        <div class="queen-badges">
+          ${queen2.winner ? '<span title="Winner">👑</span>' : ''}
+          ${queen2.missCongeniality ? '<span title="Miss Congeniality">👩‍❤️‍👩</span>' : ''}
+        </div>
+        <div class="queen-details">
+          <div class="queen-name">${queen2.name}</div>
+          <div class="queen-seasons">
+            ${queen2.seasons.map(s => 
+              `<span class="season-name">${s.season}:</span>` +
+              `<span class="season-placement">${s.placement.map(p => 
+                p + (p === 1 ? 'st' : p === 2 ? 'nd' : p === 3 ? 'rd' : 'th')
+              ).join(' / ')}</span>`
+            ).join('<br>')}
+          </div>
+        </div>`;
+    }
+  }
+
   // Reset any lingering styles
   const leftField = document.getElementById("leftField");
   const rightField = document.getElementById("rightField");
@@ -417,8 +462,13 @@ export function showImage() {
 }
 
 //Convert numeric value into a name (emoticon)+++++++++++++++++++++++++++++++
-export function toNameFace(n) {
-  return activeQueens[n];
+export function toNameFace(index) {
+  // If we're using queensWithData or allWinners list
+  if (activeQueens[index] && typeof activeQueens[index] === 'object') {
+    return activeQueens[index].name;
+  }
+  // If we're using a simple array of names
+  return activeQueens[index];
 }
 
 // Modify the initialize function to shuffle before starting
@@ -436,10 +486,13 @@ export function startSorting() {
       activeQueens = getRandomQueens(10);
       break;
     case 'all':
-      activeQueens = allWinners;
+      activeQueens = allWinners;  // Pass the full objects
       break;
     case 'full':
       activeQueens = allQueens;
+      break;
+    case 'data':
+      activeQueens = queensWithData;  // Pass the full objects
       break;
   }
   
