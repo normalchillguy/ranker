@@ -288,6 +288,15 @@ export const allWinners = [
     ],
     missCongeniality: false,
     winner: true
+  },
+  {
+    name: "Angeria Paris VanMichaels",
+    seasons: [
+      { season: "Season 14", placement: [3, 4, 5] },  // Joint placement in top 5
+      { season: "All Stars 9", placement: [1] }
+    ],
+    missCongeniality: false,
+    winner: true
   }
 ];
 
