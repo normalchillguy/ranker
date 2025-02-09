@@ -12,7 +12,11 @@ import { allQueensWithData } from "./lists/allQueensWithData.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   // Make functions globally available
-  window.startSorting = startSorting;
+  window.startSorting = () => {
+    const selectedValue =
+      document.querySelector(".dropdown-button").dataset.value;
+    startSorting(selectedValue);
+  };
   window.recordChoice = recordChoice;
   window.toggleTheme = toggleTheme;
   window.downloadResults = downloadResults;
@@ -51,4 +55,29 @@ document.addEventListener("DOMContentLoaded", () => {
     root.setAttribute("data-theme", "light");
     themeButton.innerHTML = "☀️";
   }
+
+  // Add this to your existing JavaScript
+  document
+    .querySelector(".dropdown-button")
+    .addEventListener("click", function () {
+      this.parentElement.classList.toggle("active");
+    });
+
+  document.querySelectorAll(".dropdown-option").forEach((option) => {
+    option.addEventListener("click", function () {
+      const value = this.dataset.value;
+      const text = this.textContent;
+      document.querySelector(".dropdown-button").textContent = text;
+      this.parentElement.parentElement.classList.remove("active");
+      // Update the value for use in startSorting
+      document.querySelector(".dropdown-button").dataset.value = value;
+    });
+  });
+
+  // Close dropdown when clicking outside
+  document.addEventListener("click", function (e) {
+    if (!e.target.closest(".custom-dropdown")) {
+      document.querySelector(".custom-dropdown").classList.remove("active");
+    }
+  });
 });

@@ -48,12 +48,21 @@
               align-items: center;
             "
           >
-            <div class="select-wrapper">
-              <select id="queenListSelect">
-                <option value="random">Random Queens (10 Queens)</option>
-                <option value="all">All Winners (35 Queens)</option>
-                <option value="full">All Queens (332 Queens)</option>
-              </select>
+            <div class="custom-dropdown">
+              <button class="dropdown-button" id="queenListSelect">
+                Random Queens (10 Queens)
+              </button>
+              <div class="dropdown-content">
+                <div class="dropdown-option" data-value="random">
+                  Random Queens (10 Queens)
+                </div>
+                <div class="dropdown-option" data-value="all">
+                  All Winners (38 Queens)
+                </div>
+                <div class="dropdown-option" data-value="full">
+                  All Queens (332 Queens)
+                </div>
+              </div>
             </div>
             <button id="startButton" onclick="startSorting()">
               Start New Ranking

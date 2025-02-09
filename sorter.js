@@ -286,6 +286,7 @@ export function showResult() {
         </tr>`;
 
   for (let i = 0; i < activeQueens.length; i++) {
+    const queen = activeQueens[lstMember[0][i]];
     str += `
       <tr style="
         background: linear-gradient(135deg,
@@ -301,15 +302,6 @@ export function showResult() {
             ? "0 2px 8px rgba(255, 71, 226, 0.1)"
             : "none"
         };
-        &:hover {
-          transform: translateY(-2px);
-          background: linear-gradient(135deg,
-            ${
-              document.documentElement.getAttribute("data-theme") === "light"
-                ? "rgba(255, 71, 226, 0.1) 0%, rgba(255, 71, 226, 0.05) 100%"
-                : "rgba(255, 71, 226, 0.3) 0%, rgba(255, 71, 226, 0.1) 100%"
-            });
-        }
       ">
         <td style="
           padding: 12px;
@@ -317,16 +309,30 @@ export function showResult() {
           border-radius: 10px 0 0 10px;
           font-weight: bold;
           color: var(--primary-color);
+          width: 80px;
         ">${ranking}</td>
         <td style="
           padding: 12px;
           border-radius: 0 10px 10px 0;
-          text-align: center;
-        ">${
-          typeof activeQueens[lstMember[0][i]] === "object"
-            ? activeQueens[lstMember[0][i]].name
-            : activeQueens[lstMember[0][i]]
-        }</td>
+          overflow: hidden;
+        ">
+          <div style="
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+          ">
+            <span style="text-align: left;">${queen.name}</span>
+            <span style="display: flex; gap: 4px; margin-left: auto;">
+              ${queen.winner ? '<span title="Winner">👑</span>' : ""}
+              ${
+                queen.missCongeniality
+                  ? '<span title="Miss Congeniality">💄</span>'
+                  : ""
+              }
+            </span>
+          </div>
+        </td>
       </tr>`;
 
     if (i < activeQueens.length - 1) {
@@ -424,7 +430,7 @@ export function showImage() {
       ${queen1.winner ? '<span title="Winner">👑</span>' : ""}
       ${
         queen1.missCongeniality
-          ? '<span title="Miss Congeniality">👩‍❤️‍👩</span>'
+          ? '<span title="Miss Congeniality">💄</span>'
           : ""
       }
     </div>
@@ -462,7 +468,7 @@ export function showImage() {
       ${queen2.winner ? '<span title="Winner">👑</span>' : ""}
       ${
         queen2.missCongeniality
-          ? '<span title="Miss Congeniality">👩‍❤️‍👩</span>'
+          ? '<span title="Miss Congeniality">💄</span>'
           : ""
       }
     </div>
@@ -529,9 +535,8 @@ export function initialize() {
   showImage();
 }
 
-export function startSorting() {
-  const selectedList = document.getElementById("queenListSelect").value;
-  switch (selectedList) {
+export function startSorting(selectedValue) {
+  switch (selectedValue) {
     case "random":
       activeQueens = getRandomQueens(10);
       break;
@@ -541,6 +546,9 @@ export function startSorting() {
     case "full":
       activeQueens = allQueensWithData; // Pass the full objects
       break;
+    default:
+      // Default to random if something goes wrong
+      activeQueens = getRandomQueens(10);
   }
 
   document.getElementById("splashScreen").style.display = "none";

@@ -463,7 +463,10 @@ export const allQueensWithData = [
   },
   {
     name: "Monica Beverly Hillz",
-    seasons: [{ season: "Season 5", placement: [12] }],
+    seasons: [
+      { season: "Season 5", placement: [12] },
+      { season: "All Stars 8", placement: [12] },
+    ],
     missCongeniality: false,
     winner: false,
   },
@@ -670,7 +673,7 @@ export const allQueensWithData = [
     name: "Mrs. Kasha Davis",
     seasons: [
       { season: "Season 7", placement: [11] },
-      { season: "All Stars 8", placement: [9] },
+      { season: "All Stars 8", placement: [10] },
     ],
     missCongeniality: false,
     winner: false,
