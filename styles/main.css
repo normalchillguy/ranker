@@ -1,5 +1,19 @@
-@import './variables.css';
-@import './layout.css';
-@import './buttons.css';
-@import './components.css';
-@import './mobile.css'; 
+@import "./variables.css";
+@import "./layout.css";
+@import "./buttons.css";
+@import "./components.css";
+@import "./mobile.css";
+
+.queen-option {
+  -webkit-tap-highlight-color: transparent; /* Prevents default mobile tap highlight */
+  touch-action: manipulation; /* Optimizes for touch */
+}
+
+.queen-option.clicked {
+  transition: all 0.2s ease;
+}
+
+/* Ensure transitions are canceled when the element is removed from DOM */
+.queen-option.clicked[style*="display: none"] {
+  transition: none;
+}

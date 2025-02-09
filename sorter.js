@@ -558,22 +558,35 @@ export function recordChoice(choice) {
   const leftField = document.getElementById("leftField");
   const rightField = document.getElementById("rightField");
 
+  // First, ensure both fields are reset
+  leftField.classList.remove("clicked");
+  rightField.classList.remove("clicked");
+  leftField.style.transform = "";
+  rightField.style.transform = "";
+  leftField.style.background = "";
+  rightField.style.background = "";
+
   if (choice == "left") {
     flag = -1;
     leftField.classList.add("clicked");
-    setTimeout(() => {
-      leftField.classList.remove("clicked");
-      leftField.style.transform = "";
-      leftField.style.background = "";
-    }, 200);
+    // Use requestAnimationFrame to ensure the animation runs
+    requestAnimationFrame(() => {
+      setTimeout(() => {
+        leftField.classList.remove("clicked");
+        leftField.style.transform = "";
+        leftField.style.background = "";
+      }, 200);
+    });
   } else if (choice == "right") {
     flag = 1;
     rightField.classList.add("clicked");
-    setTimeout(() => {
-      rightField.classList.remove("clicked");
-      rightField.style.transform = "";
-      rightField.style.background = "";
-    }, 200);
+    requestAnimationFrame(() => {
+      setTimeout(() => {
+        rightField.classList.remove("clicked");
+        rightField.style.transform = "";
+        rightField.style.background = "";
+      }, 200);
+    });
   }
 
   sortList(flag);

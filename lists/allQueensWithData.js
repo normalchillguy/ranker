@@ -1280,7 +1280,7 @@ export const allQueensWithData = [
       { season: "Season 13", placement: [10] },
       { season: "All Stars 8", placement: [5] },
     ],
-    missCongeniality: false,
+    missCongeniality: true,
     winner: false,
   },
   {
@@ -1362,7 +1362,7 @@ export const allQueensWithData = [
   {
     name: "Kerri Colby",
     seasons: [{ season: "Season 14", placement: [9] }],
-    missCongeniality: true,
+    missCongeniality: false,
     winner: false,
   },
   {
@@ -1550,7 +1550,7 @@ export const allQueensWithData = [
   {
     name: "Plasma",
     seasons: [{ season: "Season 16", placement: [8] }],
-    missCongeniality: true,
+    missCongeniality: false,
     winner: false,
   },
   {
